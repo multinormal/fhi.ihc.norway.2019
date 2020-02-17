@@ -8,6 +8,13 @@ Norwegians' understanding of the
 a comparison Norwegians to Ugandan children, parents, and teachers. The package
 contains code and data.
 
+## License
+
+Please note that distinct licenses apply to the code and data:
+
+* The code is licensed using the [MIT license](LICENSE)
+* The data are licensed using the [CC-BY-4.0 license](LICENSE-DATA)
+
 ## Setup
 
 ### 1. Clone this repository
