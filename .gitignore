@@ -38,3 +38,8 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 .DS_Store
+.Rproj.user
+inst/extdata/Quiz-1-data.xlsx
+inst/extdata/Quiz-2-data.xlsx
+inst/extdata/Quiz-3-data.xlsx
+inst/extdata/Quiz-4-data.xlsx
