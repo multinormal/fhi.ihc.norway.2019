@@ -1,0 +1,50 @@
+Package: fhi.ihc.norway.2019
+Type: Package
+Title: Analysis of Norwegian Survey of IHC Concepts (2019)
+Version: 0.1.0
+Author: Chris Rose
+Maintainer: Chris Rose <cjro@fhi.no>
+Description: Analysis of Norwegian Survey of IHC Concepts (2019)
+Imports:
+		ggplot2 (>= 2.2.1),
+		lme4 (>= 1.1-21),
+		memoise (>= 1.1.0),
+		mice (>= 3.5.0),
+		mitools (>= 2.4),
+		readr (>= 1.3.1),
+		scales (>= 1.0.0),
+    survey (>= 3.36),
+		stringr (>= 1.4.0),
+    tidyverse (>= 1.2.1),
+    tools (>= 3.5.2)
+Remotes: thomasp85/patchwork@fd7958b
+License: Copyright Folkehelseinstituttet 2019
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Collate: 
+    'analysis_norwegians_regression.R'
+    'names_groups.R'
+    'analysis_num_correct_glmm.R'
+    'analysis_num_correct_survey.R'
+    'analysis_understanding.R'
+    'correct_answers.R'
+    'data_norway_num_correct.R'
+    'data_survey.R'
+    'data_uganda_children.R'
+    'data_uganda_parents.R'
+    'data_uganda_teachers.R'
+    'methods_expl_reg.R'
+    'methods_logit_df.R'
+    'methods_nca_gaussian.R'
+    'methods_nca_quasibinomial.R'
+    'methods_ncg_binomial.R'
+    'methods_ncg_gaussian.R'
+    'methods_prop_df.R'
+    'names_attitudes.R'
+    'names_concepts.R'
+    'names_variables.R'
+    'package_docs.R'
+    'table_participants.R'
+    'translate.R'
+    'weighting.R'
