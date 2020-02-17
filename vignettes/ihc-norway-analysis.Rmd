@@ -1,0 +1,469 @@
+---
+title: "IHC Norway Survey"
+author: "Chris Rose, Folkehelseinstituttet (`r Sys.Date()`)"
+output: 
+  rmarkdown::word_document:
+    fig_width: 7
+    fig_height: 5.6
+    reference_docx: template.docx
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dpi=600
+)
+
+library(fhi.ihc.norway.2019)
+library(knitr)
+import::from(magrittr, "%>%")
+
+set.seed(1234)
+
+# Get the vignette directory for saving figures.
+vignette_dir <- rprojroot::find_root_file("vignettes",
+                                          criterion = rprojroot::has_file("DESCRIPTION"))
+```
+
+This report was generated on `r date()` using revision
+`r system("git rev-parse --short HEAD", intern = TRUE)`.
+
+## Overview
+
+This document describes the methods and results of the survey of Norwegians' understanding
+of key concepts for Informed Health Choices.
+
+## Methods
+
+
+### Norwegians' understanding of the key concepts, attitudes, and intended behaviors
+
+We developed four different questionnaires to cover 31 of the key concepts. Questions on
+four concepts of particular interest ("Old is better!", "Associated with!", "A study
+shows!", and "Dissimilar comparison groups") were included in all questionnaires. The
+first questionnaire included translations into Norwegian Bokmål of the same questions used
+in our previous randomized controlled trials in Uganda, facilitating comparison of
+Norwegians and Ugandans (see below). We used survey responses to estimate the percentage
+of the adult Norwegian population that understands each concept, and that agrees with each
+of seven statements about attitudes and intended behaviors. We classified a participant as
+understanding a concept if they correctly answered all questions on the concept.
+
+To address the likely problem of non-random non-response, we used iterative
+post-stratification to match marginal distributions of sex, educational attainment level,
+and statistical region of residence of the sample to the Norwegian population, as
+described below. We did not collect data on participant age and could not use it for
+post-stratification as planned.
+
+We obtained Eurostat data on the marginal distributions of sex and statistical region of
+residence for all Norwegians, and educational attainment level for Norwegians aged 15 to
+64 years (data sets `TPS00002`, `TGS00096`, and `edat_lfse_03`). Participants reported
+their "fylke" (county) of residence. We mapped these to the corresponding Nomenclature of
+Territorial Units for Statistics (NUTS 2) regions of Norway reported by Eurostat.
+Participants reported the highest level of education they attained using Norwegian
+terminology (e.g., "Grunnskolen", "Videregående"). We mapped these to the corresponding
+International Standard Classification of Education 2011 categories reported by Eurostat
+(levels 0–2, 3–4, and 5–8). We then used multiple imputation using chained equations to
+account for missing values of the post-stratification variables. We performed
+imputation using: the post-stratification variables (sex, region of residence,
+and educational attainment); demographic variables that code for whether participants
+had training in research or medicine, or if they had been a research participant;
+and the dependent variable (whether they understood a particular concept). We iteratively
+post-stratified each imputed data set and estimated the percentage of the Norwegian
+population that understands each key concept, and that agrees with each of statements
+about attitudes and intended behaviors. We used the R packages `mice`, `mitools`,
+`survey`, and `tidyverse`.
+
+We present summaries of the sample (numbers, sample sizes, and percentages) and
+post-stratified population estimates for the 31 key concepts, and seven attitudes and
+intended behaviors. We quantified uncertainty on our estimates using 95% confidence
+intervals, and protected the family-wise coverage probability of the confidence intervals
+for the four key concepts included in all questionnaires via Bonferroni-correction.
+
+
+### Comparisons to Ugandans
+
+We used data from the first questionnaire and our previous randomized controlled
+trials in Uganda to compare mean test scores, and probabilities of achieving
+passing and mastery scores, between Norwegian adults and Ugandan parents
+(controls who did not listen to a podcast intervention, and took the test at the
+time of the original trial), teachers (controls who took the test one year after
+the original trial), and children (assigned either to a podcast intervention or
+a control group, and who took the test one year after the original trial). We
+defined passing as answering at least 13 of 24 questions correctly (at least 11
+of 18 for Ugandan parents), and mastery as answering at least 20 of 24 questions
+correctly (at least 15 of 18 for Ugandan parents), as in the original trials.
+
+We estimated mean scores and odds ratios using generalized linear mixed-effects
+models (GLMMs; normal errors and identity link for mean scores, binomial errors
+and logit link for passing and mastery) using the `lme4` R package. In the
+trials, school was the randomized unit for children and teachers, while parents
+were individually randomized. We modelled this clustering structure using random
+effects (a random intercept for each randomized unit). We did not adjust for
+other covariates. No data were missing and we did not apply post-stratification
+weights for Norwegians.
+
+For mean scores, we present a table of estimates of population means and
+differences in means relative to the Ugandan children, and a forest plot of the
+mean scores. For passing and mastery, we present tables of estimates of odds
+ratios comparing each group to Ugandan children, probabilities ("risks",
+calculated from the estimated coefficients of the GLMMs), and differences in
+probabilities ("risk differences") relative to the Ugandan children. Odds ratios
+less than unity and differences less than zero favor the children. We quantify
+uncertainty on estimates using 95% confidence intervals and *P* values.
+
+### Exploratory analyses
+
+#### Key concepts
+
+We performed exploratory analyses to investigate how Norwegians' understanding
+of each key concept is associated with the demographic covariates sex, research
+training, research participation, education, and medical education. We used
+generalized linear models (quasibinomial errors, logit link) to model
+understanding of each concept in terms of the covariates, which were modelled as
+categorical variables. Multiple imputation and post-stratification were used as
+in the main analysis.
+
+#### Attitudes and intended behaviors
+
+We also performed exploratory analyses to investigate how Norwegians' attitudes
+and intended behaviors are associated with the demographic covariates sex,
+research training, research participation, education, and medical education.
+Analyses were performed in the same way as for the exploratory analyses for the
+key concepts.
+
+#### Mean score, passing, and mastery
+
+We used data from the first questionnaire to perform exploratory analyses to
+investigate how Norwegians' mean scores and achievement of passing and mastery
+scores are associated with the demographic covariates sex, research training,
+research participation, education, and medical education. We used generalized
+linear models (normal errors and identity link for mean score; quasibinomial
+errors and logit link for passing and mastery) to model the outcomes in terms of
+the covariates, which were modelled as categorical variables. Multiple
+imputation and post-stratification were used as in the main analysis. We
+performed imputation using: the post-stratification variables (sex, region of
+residence, and educational attainment); demographic variables that code for
+whether participants had training in research or medicine, and if they had
+been a research participant; and mean score (which is directly related to the
+outcomes passing and mastery).
+
+
+## Results
+
+### Participant characteristics
+
+The following table shows participant characteristics across the four
+questionnaires. For each level of each stratification variable, Fisher's exact
+test is used to assess the strength evidence against the null hypothesis of
+equal proportions across the four questionnaires (**NOTE:** this column is for
+information only and may be dropped from the final table). Of the 771
+respondents, 21 (2.7%) did not provide data on at least of one the covariates
+sex, research training, research participation, education, medical education,
+and county of residence.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+table_participants() %>% kable()
+```
+
+
+### Norwegians' understanding of the key concepts, attitudes, and intended behaviors
+
+#### Key concepts
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+# Calculate the proportions for each concept.
+understand_concepts_result <- proportion_understand_all_concepts()
+
+# Calculate the mean, minimum and maximum half-widths of the CIs for
+# concepts that are and are not Bonferroni-corrected, and the number of
+# CIs that were too wide.
+common_ind <- stringr::str_ends(understand_concepts_result$concept, "\U2021")
+other_ind <- !common_ind
+
+mean_common <- mean(understand_concepts_result$half_width[common_ind]) %>% scales::percent()
+min_common <- min(understand_concepts_result$half_width[common_ind]) %>% scales::percent()
+max_common <- max(understand_concepts_result$half_width[common_ind]) %>% scales::percent()
+
+mean_other <- mean(understand_concepts_result$half_width[other_ind]) %>% scales::percent()
+min_other <- min(understand_concepts_result$half_width[other_ind]) %>% scales::percent()
+max_other <- max(understand_concepts_result$half_width[other_ind]) %>% scales::percent()
+
+num_ci_too_wide <- sum(understand_concepts_result$half_width > 0.08)
+
+# Stop if the powering was not successful on average overall.
+stopifnot(mean(understand_concepts_result$half_width) < 0.08)
+```
+
+We designed the survey to provide estimates of Norwegians' understanding of the key
+concepts with confidence intervals no wider than ±5% (for the four concepts common to all
+questionnaires) and ±8% (for the other concepts, and the attitudes and intended
+behaviors). This was achieved on average, but not for every concept. The mean width of the
+confidence intervals for the four concepts common to all questionnaires was
+±`r mean_common` (range ±`r min_common` to ±`r max_common`). The mean width of the other
+confidence intervals was ±`r mean_other` (range ±`r min_other` to ±`r max_other`;
+`r num_ci_too_wide` of the `r length(understand_concepts_result$half_width)` concepts had
+confidence intervals wider than ±8%).
+
+The following table shows estimates of the percentage of the Norwergian population that
+understands each of the key concepts.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+understand_concepts_result %>% summary() %>% kable()
+```
+‡ Confidence intervals have been Bonferroni-corrected.
+
+The above results are presented graphically in the figure below:
+
+```{r echo=FALSE, message=FALSE, fig.width = 9, fig.height = 10}
+understand_concepts_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "understand-concepts.png"), width = 9, height = 10, dpi = 600)
+```
+
+#### Attitudes and intended behaviors
+
+The following table shows estimates for attitudes and intended behaviors.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+attitudes_result <- proportion_understand_all_concepts(attitudes_intentions = TRUE)
+attitudes_result %>% summary() %>% kable()
+```
+
+The above results are presented graphically in the figure below.
+
+```{r echo=FALSE, message=FALSE, fig.width = 9, fig.height = 3}
+attitudes_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "attitudes.png"), width = 9, height = 3, dpi = 600)
+```
+
+
+### Comparisons to Ugandans
+
+#### Mean score
+
+The following table compares mean test scores of Norwegians and Ugandans parents.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+mean_score_result <- num_correct_glmm_analysis(formula = proportion_correct ~ group + (1|school),
+                                               family = stats::gaussian(link = "identity"))
+mean_score_result %>% summary() %>% kable()
+```
+
+The above results are presented graphically in the figure below.
+
+```{r echo=FALSE, message=FALSE, fig.width = 10, fig.height = 2}
+mean_score_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "mean-score.pdf"))
+```
+
+#### Passing
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+passing_result <- num_correct_glmm_analysis(formula = passing ~ group + (1|school),
+                                            family = stats::binomial(link = "logit"))
+passing_result %>% summary() %>% kable()
+```
+
+The above results are presented graphically in the figure below.
+
+```{r echo=FALSE, message=FALSE, fig.width = 11, fig.height = 2}
+passing_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "passing.pdf"))
+```
+
+#### Mastery
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+mastery_result <- num_correct_glmm_analysis(formula = mastery ~ group + (1|school),
+                                            family = stats::binomial(link = "logit"))
+mastery_result %>% summary() %>% kable()
+```
+
+The above results are presented graphically in the figure below.
+
+```{r echo=FALSE, message=FALSE, fig.width = 11, fig.height = 2}
+mastery_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "mastery.pdf"))
+```
+
+### Exploratory analyses
+
+#### Key concepts
+
+The following table presents the results of the analysis performed to explore
+associations between demographic covariates and Norwegians' understanding of the key
+concepts. Results are presented as odds ratios. Odds ratios greater than unity
+indicate that a covariate is associated with better understanding.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+logistic_regression_result <- regression_all_concepts()
+```
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+example_estimate <- logistic_regression_result %>% 
+  summary() %>% 
+  {.[.$` ` == concepts$subgroups_misleading, "Intercept"]} %>%
+  as.character()
+```
+
+Note that some odds ratios are clearly misestimated for some concepts. For
+example, the intercept term for the concept 
+"`r concepts$subgroups_misleading`" (i.e., a "reference" individual's odds for
+understanding the concept) is estimated to be `r example_estimate`.
+Formal testing for collinearity, singularity, outliers, and goodness of fit
+failed to identify these specific problems, however visual inspection of the data
+suggests that the problem may be explained by collinearity between the dependent
+variable (understanding the concept) and education (ISCED level).
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+logistic_regression_result %>% summary() %>% kable()
+```
+
+The results in the table above are presented graphically below. Note that
+confidence intervals extending outside axis ranges are clipped.
+
+```{r echo=FALSE, , fig.width = 12.5, fig.height = 7.5, message=FALSE, warning=FALSE}
+logistic_regression_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "exploratory-concepts.pdf"))
+```
+
+#### Attitudes and intended behaviors
+
+The following table presents the results of analyses performed to explore the
+associations between demographic covariates and Norwegians' attitudes and intended
+behaviors. Results are presented as odds ratios. Odds ratios greater than unity
+indicate that a covariate is associated with having a particular attitude or
+intending to engage in a particular behavior.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+attitudes_logistic_regression_result <- regression_all_concepts(attitudes_intentions = TRUE)
+```
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+example_estimate <- attitudes_logistic_regression_result %>% 
+  summary() %>% 
+  {.[.$` ` == attitudes$att_se_15_1, "ISCED Levels 3-4"]} %>%
+  as.character()
+```
+
+As before, some odds ratios are clearly misestimated. For example, the odds
+ratio for ISCED Levels 3-4 for the attitude 
+"`r attitudes$att_se_15_1`" is estimated to be `r example_estimate`.
+As before, this problem may be explained by collinearity between the dependent
+variable (understanding the concept) and education (ISCED level).
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+attitudes_logistic_regression_result %>% summary() %>% kable()
+```
+
+The results in the table above are presented graphically below. Note that
+confidence intervals extending outside axis ranges are clipped.
+
+```{r echo=FALSE, fig.height=2, fig.width=11, message=FALSE, warning=FALSE}
+attitudes_logistic_regression_result %>% plot()
+ggplot2::ggsave(file.path(vignette_dir, "exploratory-attitudes.pdf"))
+```
+
+#### Mean score, passing, and mastery
+
+The following table presents the results of analyses performed to explore the
+associations between demographic covariates and Norwegians' mean scores and
+achievement of passing and mastery scores. Results for mean score are presented as
+percentages. Results for passing and mastery are presented as odds ratios. Odds
+ratios greater than unity indicate that a covariate is associated with achieving
+passing or mastery scores.
+
+Note that the result for passing is unreliable because all but one of the
+Norwegian respondents achieved a passing score. The one Norwegian who did not
+achieve a passing score was not educated past primary school level (ISCED levels
+0-2), did not have education in research or medicine, and had been a research
+participant.
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+exploratory_mean_score <- exploratory_regression_norwegians(
+                            outcome = "num_correct / num_total",
+                            outcome_name = "Mean score",
+                            family = stats::gaussian())
+exploratory_passing     <- exploratory_regression_norwegians(
+                            outcome = "passing",
+                            outcome_name = "Passing",
+                            family = stats::quasibinomial(link = "logit"))
+exploratory_mastery     <- exploratory_regression_norwegians(
+                            outcome = "mastery",
+                            outcome_name = "Mastery",
+                            family = stats::quasibinomial(link = "logit"))
+rbind(
+  exploratory_mean_score  %>% summary(),
+  exploratory_passing     %>% summary(),
+  exploratory_mastery     %>% summary()
+) %>% kable()
+```
+
+
+## Appendix: Notes on comparisons to Ugandans
+
+1. I initially tried to use the `svyglm` function of the `survey` package to compare
+   Norwegians to Ugandans, as this would allow post-stratification (and modelling the
+   clustering as a "complex design"). However, I found that the point estimates provided
+   were incorrect and the standard errors were all identical and very small. The standard
+   errors provided may be the variances between the distinct multiply-imputed data
+   sets, but in any case, the point estimates were clearly wrong.
+2. As a sanity-check, I compared the results from `svyglm` with `glm` (i.e., a regular
+   generalized linear model). The `glm` function provided sensible-looking point estimates
+   and standard errors, but does not account for the clustering structure.
+3. I then moved to using the `lme4` package, also provides sensible point estimates and
+   standard errors, allows the clustering structure to be modelled, but does not allow
+   post-stratification weights to be used for the Norwegians. The results presented can
+   therefore not be interpreted as a comparison of typical Norwegians to Ugandans, but as
+   a comparison of Norwegians who answer surveys to Ugandans (who take part in research
+   studies).
+4. The specific models fitted using the `lme4` package do not adjust for variables such
+   as education. I tried fitting such models, but the software was unable to do so, likely
+   because of collinearity (i.e., education of the primary school children can be
+   predicted perfectly by the fact they are primary school children).
+5. The clustering actually has a more complex structure than modelled (randomized units are
+   clustered within country), so ideally we would estimate distinct variances for the
+   random intercepts within Uganda and within Norway. However, the software was unable to
+   fit this model, perhaps because of collinearity between group and country (i.e.,
+   it is possible predict an individual's country given their group membership). A common
+   variance is therefore assumed for the random intercepts.
+
+```{r echo=FALSE, message=FALSE, fig.width = 10, fig.height = 2}
+### >80% Answered correctly
+# understand_concepts_result %>% dplyr::filter(proportion > 0.8) %>% plot(simple = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, fig.width = 7, fig.height = 2.5}
+### No better than guessing
+# understand_concepts_result %>% dplyr::filter(no_better_than_random) %>% plot(simple = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, fig.width = 7, fig.height = 2.5}
+### Worse or no better than Ugandan children
+# **NOTE** This result is "hard-coded" and based on preliminary data. Please check that the
+# result is correct before using this.
+# understand_concepts_result %>% plot(simple = TRUE, concept_subset = c(
+#   "A study shows!",
+#   "Old is better!",
+#   "New is better!",
+#   "It worked for me!",
+#   "Recommended by experts!",
+#   "Dissimilar comparison groups"
+#   ))
+```
+
+```{r echo=FALSE, message=FALSE, fig.width = 10, fig.height = 2.5}
+### Better than Ugandan children
+
+# **NOTE** This result is "hard-coded" and based on preliminary data. Please check that the
+# result is correct before using this.
+
+# understand_concepts_result %>% plot(simple = TRUE, concept_subset = c(
+#   "Associated with!",
+#   "As advertised!",
+#   "No comparison needed!",
+#   "Dissimilar expectations or behaviours",
+#   "Few people or events",
+#   "Do the advantages outweigh the disadvantages for you?"
+#   ))
+```
