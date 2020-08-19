@@ -21,14 +21,14 @@ translate_education <- function(data) {
 												 "Primary" = "Grunnskolen",
 												 "Secondary" = "Videregående",
 												 "Tertiary (1-2 years)" = "Høgskole/universitet (ett til to år)",
-												 "Tertiary (3-5 years)" = "Høgskole/universitet (tre til fire år)",
+												 "Tertiary (3-4 years)" = "Høgskole/universitet (tre til fire år)",
 												 "Masters degree" = "Høgskole/universitet (master)",
 												 "PhD" = "Høgskole/universitet (PhD)") %>%
 												 forcats::fct_relevel(c(
 												 		"Primary",
 												 		"Secondary",
 												 		"Tertiary (1-2 years)",
-												 		"Tertiary (3-5 years)",
+												 		"Tertiary (3-4 years)",
 												 		"Masters degree",
 												 		"PhD")))
 }
