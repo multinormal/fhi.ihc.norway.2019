@@ -12,7 +12,7 @@ add_weight_columns <- function(data) {
 		dplyr::mutate(`ISCED_Level` = forcats::fct_collapse(Education,
 			"Levels 0-2" = "Primary",
 			"Levels 3-4" = "Secondary",
-			"Levels 5-8" = c("Tertiary (1-2 years)", "Tertiary (3-5 years)", "Masters degree", "PhD")
+			"Levels 5-8" = c("Tertiary (1-2 years)", "Tertiary (3-4 years)", "Masters degree", "PhD")
 			) %>% ordered()) %>%
 		# Map the existing County levels to NUTS 2 levels.
 		dplyr::mutate(`NUTS2` = forcats::fct_collapse(County,
